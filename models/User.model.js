@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const { Schema, Types } = mongoose;
 const opts = { toJSON: { virtuals: true } };
 const userSchema = new Schema(
   {
@@ -18,9 +18,42 @@ const userSchema = new Schema(
     userImage: {
       type: String,
     },
-    posts: [],
-    likedPosts: [],
-    comments: [],
+    posts: [
+      {
+        type: Types.ObjectId,
+        ref: "Post",
+      },
+    ],
+    likedPosts: [
+      {
+        type: Types.ObjectId,
+        ref: "Post",
+      },
+    ],
+    comments: [
+      {
+        type: Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
+    followers: [
+      {
+        type: Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    following: [
+      {
+        type: Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    notification: [
+      {
+        type: Types.ObjectId,
+        ref: "Notification",
+      },
+    ],
   },
   opts
 );

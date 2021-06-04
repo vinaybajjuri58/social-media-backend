@@ -16,5 +16,8 @@ const userSchema = new Schema({
   userImage: {
     type: String,
   },
+  posts: [],
+  likedPosts: [],
+  comments: [],
 });
 module.exports = mongoose.model("User", userSchema);

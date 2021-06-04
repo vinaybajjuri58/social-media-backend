@@ -1,9 +1,11 @@
 const User = require("../models/User.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { imageUploadHandler } = require("../utils/imageUploadHandler");
 const userSignUp = async (req, res) => {
   const { email, name, password } = req.body;
   let userExists;
+  let userImageUrl = "";
   if (!(email && password)) {
     return res
       .status(400)
@@ -19,17 +21,22 @@ const userSignUp = async (req, res) => {
     }
     const salt = await bcrypt.genSalt(12);
     const hashPassword = await bcrypt.hash(password, salt);
+    if (req.body.image) {
+      userImageUrl = await imageUploadHandler(req.body.image);
+    }
     const newUser = new User({
       name,
       email,
       password: hashPassword,
+      userImage: userImageUrl,
     });
-    await newUser.save();
+    const savedUser = await newUser.save();
     res.status(200).json({
       success: true,
       message: "User registered Successfully",
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       success: false,
       message: "Error in registering new User",

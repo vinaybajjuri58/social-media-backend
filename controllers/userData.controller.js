@@ -1,6 +1,6 @@
 const User = require("../models/User.model");
 const getUserDetails = async (req, res) => {
-  const { id } = req.user.id;
+  const id = req.userId;
   try {
     const userData = await User.findById(id)
       .populate("notifications")
@@ -23,7 +23,7 @@ const getSpecificUserDetails = async (req, res) => {
   const { userId } = req.params;
   try {
     const userData = await User.findById(userId)
-      // .populate("posts")
+      .populate("posts")
       .populate({ path: "following", select: "userName name userImage" })
       .populate({ path: "followers", select: "userName name userImage" })
       .select("-password");

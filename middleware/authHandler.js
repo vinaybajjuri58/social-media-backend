@@ -17,7 +17,8 @@ const authValidator = async (req, res, next) => {
         message: "User doesnt exists",
       });
     }
-    req.user = { ...userData._doc, id: userData._id };
+    req.user = userData;
+    req.userId = userData._id;
     next();
   } catch (err) {
     res.status(500).json({

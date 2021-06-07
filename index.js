@@ -12,6 +12,9 @@ const {
   pathNotFoundHandler,
   errorHandler,
 } = require("./middleware/errorHandlers");
+const { notificationRouter } = require("./routes/notification.routes");
+const { postRouter } = require("./routes/post.routes");
+const { authValidator } = require("./middleware/authHandler");
 initialiseDBConnection();
 const PORT = process.env.PORT || 5000;
 app.get("/", (req, res) => {
@@ -21,6 +24,8 @@ app.get("/", (req, res) => {
   });
 });
 app.use("/api/users", userRouter);
+app.use("/api/notifications", authValidator, notificationRouter);
+app.use("/api/posts", postRouter);
 
 app.use(pathNotFoundHandler);
 app.use(errorHandler);

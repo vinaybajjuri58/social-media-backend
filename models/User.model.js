@@ -3,6 +3,11 @@ const { Schema, Types } = mongoose;
 const opts = { toJSON: { virtuals: true } };
 const userSchema = new Schema(
   {
+    userName: {
+      type: String,
+      unique: true,
+      required: "Add a userName",
+    },
     name: {
       type: String,
       required: "username is required",
@@ -48,7 +53,7 @@ const userSchema = new Schema(
         ref: "User",
       },
     ],
-    notification: [
+    notifications: [
       {
         type: Types.ObjectId,
         ref: "Notification",

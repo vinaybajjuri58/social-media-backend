@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const { imageUploadHandler } = require("../utils/imageUploadHandler");
 const userSignUp = async (req, res) => {
   const { email, name, password } = req.body;
-  let userExists;
+  let userExists, coverImageUrl;
   let userImageUrl = "";
   if (!(email && password)) {
     return res
@@ -24,11 +24,15 @@ const userSignUp = async (req, res) => {
     if (req.body.image) {
       userImageUrl = await imageUploadHandler(req.body.image);
     }
+    if (req.body.coverImage) {
+      coverImageUrl = await imageUploadHandler(req.body.coverImage);
+    }
     const newUser = new User({
       name,
       email,
       password: hashPassword,
       userImage: userImageUrl,
+      coverImage: coverImageUrl,
     });
     const savedUser = await newUser.save();
     res.status(200).json({

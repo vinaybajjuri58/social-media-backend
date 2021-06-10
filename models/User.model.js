@@ -16,11 +16,21 @@ const userSchema = new Schema(
       type: String,
       required: "Email is required",
     },
+    website: {
+      type: String,
+    },
+    bio: {
+      type: String,
+      required: "Add bio",
+    },
     password: {
       type: String,
       required: "Password is required",
     },
     userImage: {
+      type: String,
+    },
+    coverImage: {
       type: String,
     },
     posts: [

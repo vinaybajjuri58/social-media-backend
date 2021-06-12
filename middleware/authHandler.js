@@ -6,7 +6,7 @@ const authValidator = async (req, res, next) => {
     if (!token) {
       return res.status(500).json({
         success: false,
-        message: "Users is not loggedIn",
+        message: "User is not loggedIn",
       });
     }
     const { userId } = jwt.verify(token, process.env.KEY);

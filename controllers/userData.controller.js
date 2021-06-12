@@ -1,4 +1,5 @@
 const User = require("../models/User.model");
+const mongoose = require("mongoose");
 const getUserDetails = async (req, res) => {
   const id = req.userId;
   try {
@@ -40,7 +41,58 @@ const getSpecificUserDetails = async (req, res) => {
     });
   }
 };
+
+const followUser = async (req, res) => {
+  const userData = req.user;
+  const { userBId } = req.body;
+  try {
+    const userBData = await User.findById(userBId);
+    userBData.followers.push(userData.id);
+    userData.following.push(userBData.id);
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await userBData.save({ session: session });
+    await userData.save({ session: session });
+    await session.commitTransaction();
+    res.status().json({
+      success: true,
+      message: "Follow request successfull",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Error in following the user",
+    });
+  }
+};
+
+const unFollowUser = async (req, res) => {
+  const userData = req.user;
+  const { userBId } = req.body;
+  try {
+    const userBData = await User.findById(userBId);
+    userBData.followers.pull(userData.id);
+    userData.following.pull(userBData.id);
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await userBData.save({ session: session });
+    await userData.save({ session: session });
+    await session.commitTransaction();
+    res.status().json({
+      success: true,
+      message: "Un Follow request successfull",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Error in following the user",
+    });
+  }
+};
+
 module.exports = {
   getUserDetails,
   getSpecificUserDetails,
+  followUser,
+  unFollowUser,
 };

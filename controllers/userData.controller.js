@@ -1,5 +1,8 @@
 const User = require("../models/User.model");
+const { extend } = require("lodash");
 const mongoose = require("mongoose");
+const { imageUploadHandler } = require("../utils/imageUploadHandler");
+
 const getUserDetails = async (req, res) => {
   const id = req.userId;
   try {
@@ -20,6 +23,37 @@ const getUserDetails = async (req, res) => {
     });
   }
 };
+
+const updateUserDetails = async (req, res) => {
+  let coverImageUrl = "",
+    userImageUrl = "";
+  const { bio, websiteUrl } = req.body;
+  const id = req.userId;
+  try {
+    let userData = await User.findById(id);
+    if (req.body.image) {
+      userImageUrl = await imageUploadHandler(req.body.image);
+      userData.userImage = userImageUrl;
+    }
+    if (req.body.coverImage) {
+      coverImageUrl = await imageUploadHandler(req.body.coverImage);
+      userData.coverImage = coverImageUrl;
+    }
+    userData = extend(userData, { bio, website: websiteUrl });
+    await userData.save();
+    res.status(201),
+      json({
+        success: true,
+        message: "Updated userData successfully",
+      });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Error in updating user details",
+    });
+  }
+};
+
 const getSpecificUserDetails = async (req, res) => {
   const { userId } = req.params;
   try {

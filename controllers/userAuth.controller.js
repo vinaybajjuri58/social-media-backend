@@ -1,11 +1,9 @@
 const User = require("../models/User.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { imageUploadHandler } = require("../utils/imageUploadHandler");
 const userSignUp = async (req, res) => {
   const { email, name, password } = req.body;
-  let userExists, coverImageUrl;
-  let userImageUrl = "";
+  let userExists;
   if (!(email && password)) {
     return res
       .status(400)
@@ -21,18 +19,10 @@ const userSignUp = async (req, res) => {
     }
     const salt = await bcrypt.genSalt(12);
     const hashPassword = await bcrypt.hash(password, salt);
-    if (req.body.image) {
-      userImageUrl = await imageUploadHandler(req.body.image);
-    }
-    if (req.body.coverImage) {
-      coverImageUrl = await imageUploadHandler(req.body.coverImage);
-    }
     const newUser = new User({
       name,
       email,
       password: hashPassword,
-      userImage: userImageUrl,
-      coverImage: coverImageUrl,
     });
     const savedUser = await newUser.save();
     res.status(200).json({

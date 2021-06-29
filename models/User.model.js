@@ -21,7 +21,6 @@ const userSchema = new Schema(
     },
     bio: {
       type: String,
-      required: "Add bio",
     },
     password: {
       type: String,

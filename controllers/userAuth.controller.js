@@ -2,7 +2,7 @@ const User = require("../models/User.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userSignUp = async (req, res) => {
-  const { email, name, password } = req.body;
+  const { email, name, password, userName } = req.body;
   let userExists;
   if (!(email && password)) {
     return res
@@ -23,6 +23,7 @@ const userSignUp = async (req, res) => {
       name,
       email,
       password: hashPassword,
+      userName,
     });
     const savedUser = await newUser.save();
     res.status(200).json({

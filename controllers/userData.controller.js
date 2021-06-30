@@ -7,7 +7,6 @@ const getUserDetails = async (req, res) => {
   const id = req.userId;
   try {
     const userData = await User.findById(id)
-      .populate("notifications")
       .populate("posts")
       .populate({ path: "following", select: "userName name userImage" })
       .populate({ path: "followers", select: "userName name userImage" });
@@ -16,6 +15,7 @@ const getUserDetails = async (req, res) => {
       userData,
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       success: false,
       message: "Error in getting user data",

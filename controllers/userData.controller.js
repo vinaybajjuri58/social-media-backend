@@ -9,7 +9,8 @@ const getUserDetails = async (req, res) => {
     const userData = await User.findById(id)
       .populate("posts")
       .populate({ path: "following", select: "userName name userImage" })
-      .populate({ path: "followers", select: "userName name userImage" });
+      .populate({ path: "followers", select: "userName name userImage" })
+      .select("-password");
     res.status(200).json({
       success: true,
       userData,

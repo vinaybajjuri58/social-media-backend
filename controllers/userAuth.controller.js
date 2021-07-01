@@ -24,6 +24,10 @@ const userSignUp = async (req, res) => {
       email,
       password: hashPassword,
       userName,
+      website: "",
+      bio: "",
+      userImage: "",
+      coverImage: "",
     });
     const savedUser = await newUser.save();
     res.status(200).json({

@@ -66,6 +66,7 @@ const userLogin = async (req, res) => {
       success: true,
       message: "loggedIn successfully",
       token: token,
+      userId: userExists.id,
     });
   } catch (err) {
     return res.status(500).json({

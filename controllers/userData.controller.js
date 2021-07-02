@@ -52,12 +52,12 @@ const updateUserDetails = async (req, res) => {
     }
     userData = extend(userData, { bio, website: websiteUrl });
     await userData.save();
-    res.status(201),
-      json({
-        success: true,
-        message: "Updated userData successfully",
-      });
+    res.status(201).json({
+      success: true,
+      message: "Updated userData successfully",
+    });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       success: false,
       message: "Error in updating user details",
@@ -148,6 +148,7 @@ const unFollowUser = async (req, res) => {
 module.exports = {
   getUserDetails,
   getSpecificUserDetails,
+  updateUserDetails,
   followUser,
   unFollowUser,
 };

@@ -4,6 +4,7 @@ const { userSignUp, userLogin } = require("../controllers/userAuth.controller");
 const {
   getUserDetails,
   getSpecificUserDetails,
+  updateUserDetails,
   unFollowUser,
   followUser,
 } = require("../controllers/userData.controller");
@@ -14,7 +15,7 @@ userRouter.route("/login").post(userLogin);
 userRouter.route("/follow").post(followUser).delete(unFollowUser);
 userRouter.route("/:userId").get(getSpecificUserDetails);
 userRouter.use(authValidator);
-userRouter.route("/").get(getUserDetails);
+userRouter.route("/").get(getUserDetails).post(updateUserDetails);
 module.exports = {
   userRouter,
 };

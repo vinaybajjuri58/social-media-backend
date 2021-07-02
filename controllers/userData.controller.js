@@ -73,9 +73,19 @@ const getSpecificUserDetails = async (req, res) => {
       .populate({ path: "following", select: "userName name userImage" })
       .populate({ path: "followers", select: "userName name userImage" })
       .select("-password");
+    const userPosts = userData.posts.map((post) => ({
+      postId: post._id,
+      message: post.message,
+      likes: post.likes,
+      comments: post.comments,
+      userId: userData._id,
+      name: userData.name,
+      userName: userData.userName,
+      userImage: userData.userImage,
+    }));
     res.status(200).json({
       success: true,
-      userData,
+      userData: { ...userData._doc, id: userData._doc._id, posts: userPosts },
     });
   } catch (err) {
     console.log(err);

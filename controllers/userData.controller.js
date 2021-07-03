@@ -100,20 +100,31 @@ const getSpecificUserDetails = async (req, res) => {
 const followUser = async (req, res) => {
   const userData = req.user;
   const { userBId } = req.body;
+  if (userBId === userData._id) {
+    res.status(500).json({
+      success: false,
+      message: "User Cannot follow himself",
+    });
+  }
   try {
     const userBData = await User.findById(userBId);
-    userBData.followers.push(userData.id);
-    userData.following.push(userBData.id);
+    if (!userBData.followers.includes(userData._id)) {
+      userBData.followers.push(userData._id);
+    }
+    if (!userData.following.includes(userBData._id)) {
+      userData.following.push(userBData._id);
+    }
     const session = await mongoose.startSession();
     session.startTransaction();
     await userBData.save({ session: session });
     await userData.save({ session: session });
     await session.commitTransaction();
-    res.status().json({
+    res.status(201).json({
       success: true,
       message: "Follow request successfull",
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       success: false,
       message: "Error in following the user",
@@ -124,23 +135,33 @@ const followUser = async (req, res) => {
 const unFollowUser = async (req, res) => {
   const userData = req.user;
   const { userBId } = req.body;
+  if (userBId === userData._id) {
+    res.status(500).json({
+      success: false,
+      message: "User Cannot follow himself",
+    });
+  }
   try {
     const userBData = await User.findById(userBId);
-    userBData.followers.pull(userData.id);
-    userData.following.pull(userBData.id);
+    if (userBData.followers.includes(userData._id)) {
+      userBData.followers.pull(userData._id);
+    }
+    if (userData.following.includes(userBData._id)) {
+      userData.following.pull(userBData._id);
+    }
     const session = await mongoose.startSession();
     session.startTransaction();
     await userBData.save({ session: session });
     await userData.save({ session: session });
     await session.commitTransaction();
-    res.status().json({
+    res.status(200).json({
       success: true,
       message: "Un Follow request successfull",
     });
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: "Error in following the user",
+      message: "Error in unfollowing the user",
     });
   }
 };

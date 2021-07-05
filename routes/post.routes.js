@@ -10,14 +10,14 @@ const {
 } = require("../controllers/post.controller");
 const { authValidator } = require("../middleware/authHandler");
 const postRouter = express.Router();
-postRouter.route("/").get(getAllPosts).post(authValidator, addPost);
-postRouter
-  .route("/:postId")
-  .get(getSinglePost)
-  .delete(authValidator, deletePost);
+postRouter.route("/").get(getAllPosts);
+postRouter.route("/:postId").get(getSinglePost);
+postRouter.route("/:postId/likes").get(getLikedUsers);
+postRouter.use(authValidator);
+postRouter.route("/").post(addPost);
+postRouter.route("/:postId").delete(deletePost);
 postRouter
   .route("/:postId/likes")
-  .get(getLikedUsers)
   .post(authValidator, likePost)
   .delete(authValidator, dislikePost);
 module.exports = {

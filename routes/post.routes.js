@@ -16,10 +16,7 @@ postRouter.route("/:postId/likes").get(getLikedUsers);
 postRouter.use(authValidator);
 postRouter.route("/").post(addPost);
 postRouter.route("/:postId").delete(deletePost);
-postRouter
-  .route("/:postId/likes")
-  .post(authValidator, likePost)
-  .delete(authValidator, dislikePost);
+postRouter.route("/:postId/likes").post(likePost).delete(dislikePost);
 module.exports = {
   postRouter,
 };

@@ -149,19 +149,24 @@ const likePost = async (req, res) => {
   const { postId } = req.params;
   const userData = req.user;
   try {
-    const postData = Post.findById(postId);
+    const postData = await Post.findById(postId);
     const session = await mongoose.startSession();
     session.startTransaction();
-    postData.likes.push(userId);
-    userData.likedPosts.push(postId);
-    await postData.save({ session: session });
-    await userData.save({ session: session });
+    if (!postData.likes.includes(userId)) {
+      postData.likes.push(userId);
+      await postData.save({ session: session });
+    }
+    if (!userData.likedPosts.includes(postId)) {
+      userData.likedPosts.push(postId);
+      await userData.save({ session: session });
+    }
     await session.commitTransaction();
-    res.satus(201).json({
+    res.status(201).json({
       success: true,
       message: "Liked the post",
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       success: false,
       message: "Error occured",
@@ -175,15 +180,19 @@ const dislikePost = async (req, res) => {
   const { postId } = req.params;
   const userData = req.user;
   try {
-    const postData = Post.findById(postId);
+    const postData = await Post.findById(postId);
     const session = await mongoose.startSession();
     session.startTransaction();
-    postData.likes.pull(userId);
-    userData.likedPosts.pull(postId);
-    await postData.save({ session: session });
-    await userData.save({ session: session });
+    if (!postData.likes.includes(userId)) {
+      postData.likes.pull(userId);
+      await postData.save({ session: session });
+    }
+    if (!userData.likedPosts.includes(postId)) {
+      userData.likedPosts.pull(postId);
+      await userData.save({ session: session });
+    }
     await session.commitTransaction();
-    res.satus(201).json({
+    res.status(201).json({
       success: true,
       message: "Disliked the post",
     });

@@ -122,6 +122,12 @@ const followUser = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Follow request successfull",
+      followerData: {
+        name: userBData.name,
+        userName: userBData.userName,
+        id: userBData._id,
+        userImage: userBData.userImage,
+      },
     });
   } catch (err) {
     console.log(err);
@@ -157,6 +163,12 @@ const unFollowUser = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Un Follow request successfull",
+      unFollowerData: {
+        name: userBData.name,
+        userName: userBData.userName,
+        id: userBData._id,
+        userImage: userBData.userImage,
+      },
     });
   } catch (err) {
     res.status(500).json({

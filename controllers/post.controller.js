@@ -152,12 +152,8 @@ const likePost = async (req, res) => {
     const postData = await Post.findById(postId);
     const session = await mongoose.startSession();
     session.startTransaction();
-    if (!postData.likes.includes(userId)) {
-      postData.likes.push(userId);
-    }
-    if (!userData.likedPosts.includes(postId)) {
-      userData.likedPosts.push(postId);
-    }
+    postData.likes.push(userId);
+    userData.likedPosts.push(postId);
     await userData.save({ session: session });
     await postData.save({ session: session });
     await session.commitTransaction();
@@ -183,12 +179,8 @@ const dislikePost = async (req, res) => {
     const postData = await Post.findById(postId);
     const session = await mongoose.startSession();
     session.startTransaction();
-    if (!postData.likes.includes(userId)) {
-      postData.likes.pull(userId);
-    }
-    if (!userData.likedPosts.includes(postId)) {
-      userData.likedPosts.pull(postId);
-    }
+    postData.likes.pull(userId);
+    userData.likedPosts.pull(postId);
     await userData.save({ session: session });
     await postData.save({ session: session });
     await session.commitTransaction();

@@ -154,12 +154,12 @@ const likePost = async (req, res) => {
     session.startTransaction();
     if (!postData.likes.includes(userId)) {
       postData.likes.push(userId);
-      await postData.save({ session: session });
     }
     if (!userData.likedPosts.includes(postId)) {
       userData.likedPosts.push(postId);
-      await userData.save({ session: session });
     }
+    await userData.save({ session: session });
+    await postData.save({ session: session });
     await session.commitTransaction();
     res.status(201).json({
       success: true,
@@ -185,12 +185,12 @@ const dislikePost = async (req, res) => {
     session.startTransaction();
     if (!postData.likes.includes(userId)) {
       postData.likes.pull(userId);
-      await postData.save({ session: session });
     }
     if (!userData.likedPosts.includes(postId)) {
       userData.likedPosts.pull(postId);
-      await userData.save({ session: session });
     }
+    await userData.save({ session: session });
+    await postData.save({ session: session });
     await session.commitTransaction();
     res.status(201).json({
       success: true,

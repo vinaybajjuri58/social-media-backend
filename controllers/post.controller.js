@@ -99,25 +99,12 @@ const getSinglePost = async (req, res) => {
           select: "userName name userImage",
         },
       });
-    const normalisedComments = post.comments.map((comment) => {
-      const userData = comment.userId;
-      return {
-        userId: userData._doc._id,
-        ...userData._doc,
-        commentId: comment.id,
-        comment: comment.comment,
-        likes: comment.likes,
-      };
-    });
     res.status(200).json({
-      userId: userData._doc._id,
-      ...userData._doc,
-      postId: post.id,
-      message: post.message,
-      likes: post.likes,
-      comments: normalisedComments,
+      success: true,
+      postData: post,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: "Error in getting post data",
@@ -205,3 +192,21 @@ module.exports = {
   dislikePost,
   deletePost,
 };
+
+// userId: userData._doc._id,
+// ...userData._doc,
+// postId: post.id,
+// message: post.message,
+// likes: post.likes,
+// comments: normalisedComments,
+
+// const normalisedComments = post.comments.map((comment) => {
+//   const userData = comment.userId;
+//   return {
+//     userId: userData._doc._id,
+//     ...userData._doc,
+//     commentId: comment.id,
+//     comment: comment.comment,
+//     likes: comment.likes,
+//   };
+// });

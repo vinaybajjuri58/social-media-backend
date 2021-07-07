@@ -1,7 +1,7 @@
 const Post = require("../models/Post.model");
 const Comment = require("../models/Comment.model");
-
 const mongoose = require("mongoose");
+
 const addComment = async (req, res) => {
   const userId = req.userId;
   const user = req.user;
@@ -21,6 +21,13 @@ const addComment = async (req, res) => {
     res.status(201).json({
       success: true,
       comment: savedComment,
+      userId: {
+        name: user.name,
+        id: user._id,
+        id: user.id,
+        userName: user.userName,
+        userImage: user.userImage,
+      },
     });
   } catch (err) {
     console.log(err);
@@ -49,6 +56,7 @@ const likeComment = async (req, res) => {
     });
   }
 };
+
 const dislikeComment = async (req, res) => {
   const userId = req.userId;
   const { commentId } = req.params;

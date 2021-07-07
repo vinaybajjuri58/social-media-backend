@@ -5,7 +5,7 @@ const {
   dislikeComment,
 } = require("../controllers/comment.controller");
 const commentRouter = express.Router();
-commentRouter.route("/post/:postId").post(addComment);
+commentRouter.route("/posts/:postId").post(addComment);
 commentRouter
   .route("/:commentId/likes")
   .post(likeComment)

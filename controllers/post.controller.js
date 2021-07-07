@@ -93,10 +93,10 @@ const getSinglePost = async (req, res) => {
         select: "userName name userImage",
       })
       .populate({
-        path: "Comments",
+        path: "comments",
         populate: {
           path: "userId",
-          select: "userName name userImage",
+          select: "userName name userImage likes",
         },
       });
     res.status(200).json({

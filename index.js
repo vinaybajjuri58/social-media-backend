@@ -13,6 +13,7 @@ const {
   errorHandler,
 } = require("./middleware/errorHandlers");
 const { notificationRouter } = require("./routes/notification.routes");
+const { commentRouter } = require("./routes/comment.routes");
 const { postRouter } = require("./routes/post.routes");
 const { authValidator } = require("./middleware/authHandler");
 initialiseDBConnection();
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRouter);
 app.use("/api/notifications", authValidator, notificationRouter);
 app.use("/api/posts", postRouter);
+app.use("/api/comments/", authValidator, commentRouter);
 
 app.use(pathNotFoundHandler);
 app.use(errorHandler);

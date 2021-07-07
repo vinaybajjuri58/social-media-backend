@@ -16,6 +16,12 @@ const commentSchema = new Schema(
       type: Types.ObjectId,
       required: "PostId is required",
     },
+    likes: [
+      {
+        type: Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   opts
 );

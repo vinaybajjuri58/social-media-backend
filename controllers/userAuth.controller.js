@@ -28,6 +28,7 @@ const userSignUp = async (req, res) => {
       bio: "",
       userImage: "",
       coverImage: "",
+      comments: [],
     });
     const savedUser = await newUser.save();
     res.status(200).json({

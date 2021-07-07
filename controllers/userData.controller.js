@@ -122,6 +122,12 @@ const followUser = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Follow request successfull",
+      userData: {
+        name: userData.name,
+        userName: userData.userName,
+        id: userData._id,
+        userImage: userData.userImage,
+      },
       followerData: {
         name: userBData.name,
         userName: userBData.userName,

@@ -42,11 +42,17 @@ const updateUserDetails = async (req, res) => {
   const id = req.userId;
   try {
     let userData = await User.findById(id);
-    if (req.body.profileImage !== userData.userImage) {
+    if (
+      req.body.profileImage !== null &&
+      req.body.profileImage !== userData.userImage
+    ) {
       userImageUrl = await imageUploadHandler(req.body.profileImage);
       userData.userImage = userImageUrl;
     }
-    if (req.body.coverImage !== userData.coverImage) {
+    if (
+      req.body.coverImage !== null &&
+      req.body.coverImage !== userData.coverImage
+    ) {
       coverImageUrl = await imageUploadHandler(req.body.coverImage);
       userData.coverImage = coverImageUrl;
     }
